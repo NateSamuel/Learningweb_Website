@@ -1,0 +1,17 @@
+username,email,password,first_name,last_name,role,profile_image
+harrynorman,harrynorman@test.com,sqlpass32,Harry,Norman,Teacher,"profile_images/harrynorman.jpg
+"
+liamsmith,liamsmith@test.com,sqlpass32,Liam,Smith,Student,"profile_images/liamsmith.jpg
+"
+noahsmith,noahsmith@test.com,sqlpass32,Noah,Smith,Teacher,"profile_images/noahsmith.jpg
+"
+elijahwilliams,elijahwilliams@test.com,sqlpass32,Elijah,Williams,Student,"profile_images/elijahwilliams.jpg
+"
+lucasmoore,lucasmoore@test.com,sqlpass32,Lucas,Moore,Teacher,"profile_images/lucasmoore.jpg
+"
+oliviajohnson,oliviajohnson@test.com,sqlpass32,Olivia,Johnson,Student,"profile_images/oliviajohnson.jpg
+"
+charlottejones,charlottejones@test.com,sqlpass32,Charlotte,Jones,Student,"profile_images/charlottejones.jpg
+"
+charlotterodriguez,charlotterodriguez@test.com,sqlpass32,Charlotte,Rodriguez,Student,"profile_images/charlotterodriguez.jpg
+"

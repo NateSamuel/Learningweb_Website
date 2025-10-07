@@ -1,0 +1,290 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ user_profile.user.username }}'s Profile</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+</head>
+<body>
+    <a class="nav-link" href="../logout/"> Logout <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="../chat/chat/learningweb"> Chat with other users <span class="sr-only">(current)</span></a>
+    {% if user_profile.role == "Teacher" %}
+        <a class="nav-link" href="../users/"> Find other users <span class="sr-only">(current)</span></a>
+    {% else %}
+    {% endif %}
+    <div class="container">
+        <h2>{{ user_profile.user.username }}'s Profile</h2>
+        <p><strong>Role:</strong> {{ user_profile.role }}</p>
+        
+        {% if is_own_profile %}
+            <h3>Post a Status</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Post Status">
+            </form>
+        {% else %}
+            <p>You are viewing {{ user_profile.username }}'s profile.</p>
+        {% endif %}
+
+        <h3>Status Updates</h3>
+        {% for status in statuses %}
+            <div class="status">
+                <p><strong>{{ status.created_at|date:"F j, Y, g:i a" }}</strong></p>
+                <p>{{ status.text }}</p>
+                <hr>
+            </div>
+        {% empty %}
+            <p>No statuses yet.</p>
+        {% endfor %}
+        {% if user_profile.role == "Student" %}
+            <h3>Enrolled Courses</h3>
+            <ul>
+                {% for course in courses %}
+                    <li>
+                        <strong>{{ course.name }}</strong> - Teacher: {{ course.teacher.username }}<br>
+                        Created: {{ course.date_created|date:"F j, Y" }}<br>
+                        Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                        {% if is_own_profile %}
+                            <a href="{% url 'course_detail' course.id %}">View Course Details</a>
+                        {% else %}
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p>You are not enrolled in any courses.</p>
+                {% endfor %}
+            </ul>
+
+            <h3>Courses Not Enrolled In</h3>
+            <ul>
+                {% for course in not_enrolled_courses %}
+                    <li>
+                        <strong>{{ course.name }}</strong> - Teacher: {{ course.teacher.username }}<br>
+                        Created: {{ course.date_created|date:"F j, Y" }}<br>
+                        Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                        {% if is_own_profile %}
+                        <form action="{% url 'enroll-student' course.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Enroll in this Course</button>
+                        </form>
+                        {% else %}
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p>You are enrolled in all available courses.</p>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if user_profile.role == "Teacher" %}
+        <h3>Courses You Are Teaching</h3>
+        <ul>
+            {% for course in teacher_courses %}
+                <li>
+                    <strong>{{ course.name }}</strong><br>
+                    Created: {{ course.date_created|date:"F j, Y" }}<br>
+                    Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                    {% if is_own_profile %}
+                        <a href="{% url 'course_detail' course.id %}">View Course</a>
+                        <a href="{% url 'edit_course_page' course.id %}">Edit Course</a>
+                        <a href="{% url 'add_week_page' course.id %}">Add Week</a>
+                        {% for week in course.weeks.all %}
+                            <a href="{% url 'add_week_content' course.id week.id %}">Add Content to Week {{ week.week_number }}</a>
+                        {% endfor %}
+                        <a href="{% url 'enrolled_students' course_id=course.id %}">View Enrolled Students</a>
+                    {% else %}
+                    {% endif %}
+                </li>
+            {% empty %}
+                <p>You are not teaching any courses yet.</p>
+            {% endfor %}
+        </ul>
+            <h3>Create a Course</h3>
+            <a href="{% url 'create_course_page' %}" class="btn btn-primary">Create New Course</a>
+        {% endif %}
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ user_profile.user.username }}'s Profile</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <style>
+        body {
+            background-color: #EEF5F5; 
+            color: #015959; 
+        }
+        .container {
+            background: white; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #015959; 
+        }
+        .btn-primary {
+            background-color: #015959; 
+            border-color: #015959;
+        }
+        .btn-primary:hover {
+            background-color: #013E3E;
+        }
+
+        .btn-secondary {
+            background-color: #F4C692;
+            border-color: #F4C692;
+            color: #000;
+        }
+        .btn-secondary:hover {
+            background-color: #e0b17c;
+        }
+        .btn-block {
+            width: 100%;
+        }
+        .status {
+            background: #F4C692; 
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .btn-custom {
+            padding: 6px 12px; 
+            font-size: 0.85rem; 
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-6">
+                {% if is_own_profile %}
+                    <a class="btn btn-primary mb-2 btn-custom" href="/logout/"> Logout</a>
+                {% else %}
+                {% endif %}
+                <a class="btn btn-primary mb-2 btn-custom" href="/chat/chat/learningweb"> Chat with other users</a>
+                {% if user_profile.role == "Teacher" %}
+                    <a class="btn btn-primary mb-2 btn-custom" href="/users/"> Find other users</a>
+                {% endif %}
+
+    
+                <h2>{{ user_profile.user.username }}'s Profile</h2>
+                <p><strong>Role:</strong> {{ user_profile.role }}</p>
+    
+                {% if is_own_profile %}
+                    <h3>Post a Status</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="btn btn-primary btn-custom" value="Post Status">
+                    </form>
+                {% endif %}
+    
+                <h3>Status Updates</h3>
+                {% for status in statuses %}
+                    <div class="status">
+                        <p><strong>{{ status.created_at|date:"F j, Y, g:i a" }}</strong></p>
+                        <p>{{ status.text }}</p>
+                    </div>
+                {% empty %}
+                    <p>No statuses yet.</p>
+                {% endfor %}
+            </div>
+    
+            <!-- Right Column -->
+            <div class="col-lg-6">
+                {% if user_profile.role == "Student" %}
+                    <h3>Enrolled Courses</h3>
+                    <ul>
+                        {% for course in courses %}
+                            <li>
+                                <strong>{{ course.name }}</strong> - Teacher: {{ course.teacher.username }}<br>
+                                Created: {{ course.date_created|date:"F j, Y" }}<br>
+                                Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                                {% if is_own_profile %}
+                                    <a href="{% url 'course_detail' course.id %}">View Course Details</a>
+                                {% else %}
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <p>You are not enrolled in any courses.</p>
+                        {% endfor %}
+                    </ul>
+        
+                    <h3>Courses Not Enrolled In</h3>
+                    <ul>
+                        {% for course in not_enrolled_courses %}
+                            <li>
+                                <strong>{{ course.name }}</strong> - Teacher: {{ course.teacher.username }}<br>
+                                Created: {{ course.date_created|date:"F j, Y" }}<br>
+                                Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                                {% if is_own_profile %}
+                                <form action="{% url 'enroll-student' course.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">Enroll in this Course</button>
+                                </form>
+                                {% else %}
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <p>You are enrolled in all available courses.</p>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if user_profile.role == "Teacher" %}
+                    <div class="text-center">
+                        <h3>Courses You Are Teaching</h3>
+                        <br/>
+                        <ul>
+                            {% for course in teacher_courses %}
+                                <li>
+                                    <strong>{{ course.name }}</strong><br>
+                                    Created: {{ course.date_created|date:"F j, Y" }}<br>
+                                    Deadline: {{ course.deadline|date:"F j, Y" }}<br>
+                                    {% if is_own_profile %}
+                                        <div class="text-center">
+                                            <div class="mb-2">
+                                                <a href="{% url 'course_detail' course.id %}" class="btn btn-primary btn-custom">View Course</a>
+                                            </div>
+                                            <div class="mb-2">
+                                                <a href="{% url 'edit_course_page' course.id %}" class="btn btn-primary btn-custom">Edit Course</a>
+                                            </div>
+                                            <div class="mb-2">
+                                                <a href="{% url 'add_week_page' course.id %}" class="btn btn-info btn-custom">Add Week</a>
+                                            </div>
+                                            {% for week in course.weeks.all %}
+                                                <div class="mb-2">
+                                                    <a href="{% url 'add_week_content' course.id week.id %}" class="btn btn-secondary btn-custom">
+                                                        Add Content to Week {{ week.week_number }}
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
+                                            <div class="mb-2">
+                                                <a href="{% url 'enrolled_students' course_id=course.id %}" class="btn btn-primary btn-custom">View Enrolled Students</a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <p>You are not teaching any courses yet.</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="text-center">
+                        <h3>Create a Course</h3>
+                        <a href="{% url 'create_course_page' %}" class="btn btn-primary btn-custom">Create New Course</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

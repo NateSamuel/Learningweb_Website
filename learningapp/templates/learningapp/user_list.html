@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User List</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #EEF5F5;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #015959;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            text-align: left;
+        }
+
+        li {
+            background-color: #F4C692;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #015959;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: #015959;
+            font-weight: bold;
+            display: block;
+        }
+
+        a:hover {
+            color: white;
+        }
+
+        .empty-message {
+            color: #015959;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Users</h1>
+        {% if users %}
+            <ul>
+                {% for user in users %}
+                    <li><a href="{% url 'profile' username=user.username %}">{{ user.username }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-message">No other users found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

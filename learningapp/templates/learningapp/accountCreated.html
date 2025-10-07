@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Account Created</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <style>
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #EEF5F5;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #015959;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            color: #015959;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-message {
+            background-color: #F4C692;
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #015959;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background-color: #015959;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #F4C692;
+            color: #015959;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Account Created</h1>
+        <div class="success-message">
+            <p>Your account has been successfully created.</p>
+        </div>
+        <a href="/login/" class="btn">Go to Login</a>
+    </div>
+</body>
+</html>
